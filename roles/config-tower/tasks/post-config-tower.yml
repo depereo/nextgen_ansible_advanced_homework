@@ -1,7 +1,20 @@
 - name: Create Homework Assignment project
+  tower_project:
+    name: "00_Homework Assignment"
+    description: "nextgen homework fork"
+    organization: "Default"
+    state: present
+    scm_url: https://github.com/depereo/nextgen_ansible_advanced_homework.git
+    scm_branch: main
+    scm_type: git
+  #  tower_config_file: "/root/.tower_cli.cfg"
+    tower_username: "admin"
+    tower_password: "r3dh4t1!"
+    tower_host: tower3.eaf7.example.opentlc.com
+    tower_verify_ssl: no
+    validate_certs: false
 
-
-- name: Machine Credentail to connect to workstation using openstack.pub
+- name: Machine Credential to connect to workstation using openstack.pub
   tower_credential:
     name: Connect_to_workstation
     organization: Default
@@ -10,8 +23,13 @@
     tower_host: tower1.{{tower_GUID}}.example.opentlc.com
     tower_username: admin
     tower_password: r3dh4t1!
+    tower_verify_ssl: no
     ssh_key_data: "/root/.ssh/openstack.pem"
     username: cloud-user
+
+- name: Get rid of cert verification for these modules
+  command: |
+    tower-cli config verify_ssl false
 
 - name: Create Inventory
   command: |
