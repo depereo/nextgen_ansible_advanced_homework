@@ -1,3 +1,32 @@
 ---
 
 # tasks file for osp.servers
+
+- name: debug
+  debug:
+    msg: "{{ item }}"
+  loop: "{{ osp_servers }}"
+
+- name: Create server instances
+  os_server:
+    cloud: openstack
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    meta: "group={{ item.meta.group }},deployment_name={{ item.meta.deployment_name }}"
+    flavor: "{{ item.flavor }}"
+    security_groups: "{{ item.security_group }}"
+    key_name: mykey.pem
+    wait: no
+    nics:
+      - net-name: int_network
+      - net-name: ext_network
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+  loop: "{{ osp_servers }}"      
+  async: 900
+  poll: 0
+  register: osp_instances
