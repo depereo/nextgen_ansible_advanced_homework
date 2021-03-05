@@ -2,11 +2,6 @@
 
 # tasks file for osp.servers
 
-- name: debug
-  debug:
-    msg: "{{ item }}"
-  loop: "{{ osp_servers }}"
-
 - name: Create server instances
   os_server:
     cloud: openstack
@@ -26,7 +21,11 @@
       cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
-  loop: "{{ osp_servers }}"      
+  loop: "{{ osp_servers }}"
   async: 900
   poll: 0
   register: osp_instances
+
+
+- debug:
+    var: osp_instances
