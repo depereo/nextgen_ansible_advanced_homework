@@ -8,7 +8,21 @@
     replace: 'Defaults  !requiretty'
     backup: yes
 
-- name: enable repos
- 
+- name: enable RHEL repos
+  yum_repository:
+    name: "{{ item.name }}"
+    baseurl: "{{ item.baseurl }}"
+    enabled: yes
+    gpgcheck: no
+    loop:
+      - name: Red Hat Enterprise Linux 7
+        baseurl: http://192.168.0.5/repos/rhel-7-server-rpms
+      - name: Red Hat Enterprise Linux 7 Common
+        baseurl: http://192.168.0.5/repos/rhel-7-server-rh-common-rpms
+      - name: Red Hat Enterprise Linux 7 Extras
+        baseurl: http://192.168.0.5/repos/rhel-7-server-extras-rpms
+      - name: Red Hat Enterprise Linux 7 Optional
+        baseurl: http://192.168.0.5/repos/rhel-7-server-optional-rpms
+
 - name: install base tools and packages
 
