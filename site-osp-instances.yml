@@ -1,5 +1,5 @@
 - hosts: workstation
   connection: local
-  become: yes
+  become: no
   roles:
    - osp-servers
