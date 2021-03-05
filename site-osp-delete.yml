@@ -1,5 +1,5 @@
-- hosts: localhost
-  gather_facts: no
+- hosts: workstation
+ # gather_facts: no
   become: yes
   roles:
     - osp-instance-delete
