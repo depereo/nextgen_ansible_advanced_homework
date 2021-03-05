@@ -10,22 +10,32 @@
     meta: "group={{ item.meta.group }},deployment_name={{ item.meta.deployment_name }}"
     flavor: "{{ item.flavor }}"
     security_groups: "{{ item.security_group }}"
+    wait: true
     key_name: mykey.pem
-    wait: no
     nics:
       - net-name: int_network
-      - net-name: ext_network
     userdata: |
       #!/bin/bash
       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
       cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/openstack.pem http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pem
+      cat /tmp/openstack.pem >> /home/cloud-user/.ssh/authorized_keys
       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
   loop: "{{ osp_servers }}"
-  async: 900
-  poll: 0
   register: osp_instances
 
 
 - debug:
     var: osp_instances
+
+- name: Add FIP to server instances
+  os_floating_ip:
+    cloud: openstack
+    network: ext_network
+    state: present
+    reuse: yes
+    server: "{{ item.server.name }}"
+    wait: true
+    timeout: 900
+  loop: "{{ osp_instances.results }} "
