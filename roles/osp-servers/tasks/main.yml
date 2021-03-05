@@ -12,6 +12,7 @@
     security_groups: "{{ item.security_group }}"
     nics:
       - net-name: int_network
+      - net-name: ext_network
     userdata: |
       #!/bin/bash
       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
@@ -27,13 +28,13 @@
 - debug:
     var: osp_instances
 
-- name: Add FIP to server instances
-  os_floating_ip:
-    cloud: openstack
-    network: ext_network
-    state: present
-    reuse: yes
-    server: "{{ item.server.name }}"
-    wait: true
-    timeout: 900
-  loop: "{{ osp_instances.results }} "
+#- name: Add FIP to server instances
+#  os_floating_ip:
+#    cloud: openstack
+#    network: ext_network
+#    state: present
+#    reuse: yes
+#    server: "{{ item.server.name }}"
+#    wait: true
+#    timeout: 900
+#  loop: "{{ osp_instances.results }} "
