@@ -6,8 +6,16 @@
    # region_name: regionOne
   register: instances
 
+  - name: Fetch Openstack Servers
+    os_server_info:
+      cloud: openstack
+      region_name: regionOne
+    register: servers
+
 - debug:
     var: instances
+- debug:
+    var: servers
 
 - name: Delete instances
   os_server:
