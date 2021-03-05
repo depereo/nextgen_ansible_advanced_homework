@@ -24,5 +24,5 @@
       - name: Red Hat Enterprise Linux 7 Optional
         baseurl: http://192.168.0.5/repos/rhel-7-server-optional-rpms
 
-- name: install base tools and packages
+#- name: install base tools and packages
 
