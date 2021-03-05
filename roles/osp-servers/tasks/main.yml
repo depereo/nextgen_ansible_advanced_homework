@@ -10,8 +10,8 @@
     meta: "group={{ item.meta.group }},deployment_name={{ item.meta.deployment_name }}"
     flavor: "{{ item.flavor }}"
     security_groups: "{{ item.security_group }}"
-    wait: true
-    key_name: mykey.pem
+#    wait: true
+#    key_name: mykey.pem
     nics:
       - net-name: int_network
     userdata: |
