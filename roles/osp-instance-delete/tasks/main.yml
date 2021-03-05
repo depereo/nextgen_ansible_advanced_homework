@@ -6,9 +6,12 @@
     region_name: regionOne
   register: instances
 
+- debug:
+    var: instances
+
 - name: Delete instances
   os_server:
     cloud: openstack
     name: "{{ item.name }}"
-    state: absent 
+    state: absent
   loop: "{{ instances.openstack_servers }}"
